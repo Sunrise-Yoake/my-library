@@ -1,0 +1,598 @@
+:root {
+  --primary: #ff758f;
+  --primary-dark: #ff4d6d;
+  --secondary: #ff8fab;
+  --light: #fff0f3;
+  --dark: #590d22;
+  --gray: #a4133c;
+  --success: #a7c4bc;
+  --danger: #c9184a;
+  --card-bg: #ffffff;
+  --text-light: #fff0f3;
+  --text-dark: #590d22;
+  --shadow-sm: 0 1px 3px rgba(89, 13, 34, 0.12);
+  --shadow-md: 0 4px 10px rgba(89, 13, 34, 0.15);
+  --shadow-lg: 0 10px 20px rgba(89, 13, 34, 0.2);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  
+  /* Новые переменные для отступов */
+  --space-xs: 0.8rem;
+  --space-sm: 1.2rem;
+  --space-md: 1.8rem;
+  --space-lg: 2.4rem;
+  --space-xl: 3.2rem;
+  --space-xxl: 4rem;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Montserrat', 'Segoe UI', sans-serif;
+  background-color: var(--light);
+  color: var(--dark);
+  line-height: 1.7;
+  padding: 0;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-xl);
+}
+
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-xl);
+  padding-bottom: var(--space-md);
+  border-bottom: 2px solid rgba(255, 117, 143, 0.2);
+}
+
+h1 {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: var(--dark);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  letter-spacing: -0.5px;
+  margin-bottom: var(--space-sm);
+}
+
+h1::before {
+  content: "📚";
+  font-size: 2.4rem;
+}
+
+/* Кнопка "Новая книга" */
+#new-book-btn {
+  display: block;
+  margin: var(--space-lg) auto;
+  padding: var(--space-sm) var(--space-lg);
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  width: fit-content;
+  min-width: 240px;
+  z-index: 1;
+}
+
+#new-book-btn:hover {
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+#new-book-btn:active {
+  transform: translateY(0);
+}
+
+#new-book-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: 0.5s;
+  z-index: -1;
+}
+
+#new-book-btn:hover::before {
+  left: 100%;
+}
+
+#new-book-btn::after {
+  content: "+";
+  margin-left: var(--space-xs);
+  font-size: 1.3rem;
+}
+
+/* Модальное окно */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(89, 13, 34, 0.7);
+  backdrop-filter: blur(5px);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-md);
+}
+
+.modal-content {
+  background-color: var(--card-bg);
+  width: 100%;
+  max-width: 500px;
+  padding: var(--space-xl);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  animation: modalFadeIn 0.4s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.close-btn {
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-md);
+  font-size: 2rem;
+  color: var(--gray);
+  background: none;
+  cursor: pointer;
+  transition: var(--transition);
+  padding: var(--space-xs);
+}
+
+.close-btn:hover {
+  color: var(--dark);
+  transform: rotate(90deg);
+}
+
+/* Стили для подписей полей формы */
+.form-label {
+  display: block;
+  margin-bottom: var(--space-xs);
+  color: var(--dark);
+  font-weight: 600;
+  font-size: 1.1rem;
+  position: relative;
+  padding-left: var(--space-md);
+  letter-spacing: 0.5px;
+}
+
+.form-label::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 12px;
+  background-color: var(--primary);
+  border-radius: 3px;
+  opacity: 0.7;
+}
+
+/* Форма */
+#book-form h2 {
+  margin-bottom: var(--space-xl);
+  color: var(--dark);
+  font-size: 2rem;
+  text-align: center;
+  position: relative;
+  padding-bottom: var(--space-sm);
+}
+
+#book-form h2::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(to right, var(--primary), var(--secondary));
+  border-radius: 2px;
+}
+
+.form-group {
+  margin-bottom: var(--space-lg);
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"] {
+  width: 100%;
+  padding: var(--space-sm);
+  border: 2px solid #ffccd5;
+  border-radius: var(--radius-sm);
+  font-size: 1.1rem;
+  transition: var(--transition);
+  background-color: rgba(255, 204, 213, 0.1);
+  margin-top: var(--space-xs);
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(255, 117, 143, 0.2);
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin: var(--space-xl) 0;
+}
+
+.checkbox input {
+  width: 1.4rem;
+  height: 1.4rem;
+  accent-color: var(--primary);
+}
+
+.checkbox-label {
+  font-weight: 500;
+  color: var(--dark);
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+#book-form button[type="submit"] {
+  width: 100%;
+  padding: var(--space-sm);
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+  margin-top: var(--space-md);
+}
+
+#book-form button[type="submit"]:hover {
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Сетка книг с увеличенными расстояниями */
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--space-xl);
+  margin: var(--space-xxl) 0;
+  padding: 0 var(--space-md);
+}
+
+/* Карточка книги */
+.book-card {
+  background-color: var(--card-bg);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  border-top: 5px solid var(--primary);
+  position: relative;
+  z-index: 1;
+  margin: var(--space-sm);
+}
+
+.book-card:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--shadow-lg);
+  z-index: 2;
+}
+
+.book-card h3 {
+  color: var(--dark);
+  margin-bottom: var(--space-sm);
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.book-card p {
+  margin-bottom: var(--space-xs);
+  color: var(--gray);
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.book-card p::before {
+  content: "•";
+  color: var(--primary);
+  margin-right: var(--space-xs);
+  font-size: 1.2rem;
+}
+
+.book-card p strong {
+  color: var(--dark);
+  font-weight: 600;
+  margin-right: 0.5rem;
+  min-width: 80px;
+  display: inline-block;
+}
+
+.read-status {
+  display: inline-block;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: 2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  background-color: #ffccd5;
+  color: var(--dark);
+  margin: var(--space-xs) 0 var(--space-sm);
+}
+
+.read-status.read {
+  background-color: var(--success);
+  color: white;
+}
+
+.buttons {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+
+.buttons button {
+  flex: 1;
+  padding: var(--space-sm);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.remove-btn {
+  background-color: #ffccd5;
+  color: var(--danger);
+}
+
+.remove-btn:hover {
+  background-color: #ffb3c1;
+  transform: translateY(-2px);
+}
+
+.toggle-read-btn {
+  background-color: #d8f3dc;
+  color: #2d6a4f;
+}
+
+.toggle-read-btn:hover {
+  background-color: #b7e4c7;
+  transform: translateY(-2px);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .container {
+    padding: var(--space-lg);
+  }
+  
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
+  }
+  
+  h1 {
+    font-size: 2.2rem;
+  }
+  
+  .books-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+  
+  .book-card {
+    margin: var(--space-xs);
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --space-sm: 1rem;
+    --space-md: 1.4rem;
+    --space-lg: 1.8rem;
+  }
+  
+  .buttons {
+    flex-direction: column;
+  }
+  
+  .book-card {
+    padding: var(--space-md);
+  }
+  
+  .modal-content {
+    padding: var(--space-lg);
+  }
+}
+
+/* Стили для формы добавления книги */
+#book-form {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(255, 117, 143, 0.15);
+}
+
+.form-row {
+  margin-bottom: 1.8rem;
+  position: relative;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.6rem;
+  font-size: 1.1rem;
+  color: #590d22;
+  font-weight: 600;
+  position: relative;
+  padding-left: 1.8rem;
+}
+
+.form-label::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.2rem;
+  height: 1.2rem;
+  background-color: #ff758f;
+  border-radius: 4px;
+  opacity: 0.8;
+}
+
+.form-input {
+  width: 100%;
+  padding: 1rem 1.2rem;
+  font-size: 1rem;
+  border: 2px solid #ffccd5;
+  border-radius: 10px;
+  background-color: rgba(255, 204, 213, 0.1);
+  transition: all 0.3s ease;
+  color: #590d22;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #ff758f;
+  box-shadow: 0 0 0 4px rgba(255, 117, 143, 0.2);
+}
+
+/* Стиль для чекбокса "Прочитано" */
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  margin: 2rem 0;
+}
+
+.checkbox-label {
+  position: relative;
+  padding-left: 2.5rem;
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: #590d22;
+  font-weight: 500;
+}
+
+.checkbox-input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 1.5rem;
+  width: 1.5rem;
+  background-color: rgba(255, 204, 213, 0.2);
+  border: 2px solid #ff758f;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.checkbox-input:checked ~ .checkmark {
+  background-color: #ff758f;
+}
+
+.checkmark::after {
+  content: "";
+  position: absolute;
+  display: none;
+  left: 0.45rem;
+  top: 0.2rem;
+  width: 0.4rem;
+  height: 0.8rem;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
+.checkbox-input:checked ~ .checkmark::after {
+  display: block;
+}
+
+/* Кнопка отправки формы */
+.submit-btn {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(135deg, #ff758f, #ff4d6d);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
+}
+
+.submit-btn:hover {
+  background: linear-gradient(135deg, #ff4d6d, #ff758f);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 77, 109, 0.4);
+}
+
+.submit-btn:active {
+  transform: translateY(0);
+}
+
+.controls {
+  display: flex;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  flex-wrap: wrap;
+}
+
+.controls input,
+.controls select {
+  flex: 1;
+  min-width: 200px;
+}
